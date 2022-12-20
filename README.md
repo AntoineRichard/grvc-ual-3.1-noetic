@@ -18,8 +18,8 @@ You can find detailed instructions for installation and how to use the UAL in th
 
 ## How to install with PX4 (Sesame users look here):
 
-```
 In the sources (src) of your ROS Noetic workspace do the following:
+```
 git clone https://github.com/AntoineRichard/grvc-ual-3.1-noetic.git grvc-ual
 git clone https://github.com/AntoineRichard/PX4-V1.10.2-gz11.git Firmware
 
