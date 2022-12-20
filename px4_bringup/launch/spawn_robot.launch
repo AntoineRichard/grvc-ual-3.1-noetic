@@ -50,4 +50,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     <node pkg="px4_bringup" type="run_mavros.py" name="run_mavros_$(arg id)" output="screen" if="$(arg use_mavros)"
     args="-id=$(arg id) -mode=$(arg mode) -fcu_url=$(arg fcu_url) -gcs_url=$(arg gcs_url) -rtcm_topic=$(arg rtcm_topic)" />
 
+    <!-- Run TFs -->
+    <param name="robot_description" command="$(eval 'xacro --inorder ' + find(description_package) + '/models/' + robot_model + '/model.xacro')"/>
+
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+ 
+
 </launch>
