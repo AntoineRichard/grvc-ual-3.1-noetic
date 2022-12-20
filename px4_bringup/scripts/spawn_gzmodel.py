@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import subprocess
 import argparse
 import utils
@@ -87,21 +87,15 @@ def main():
         xacro_args = "xacro --inorder -o " + temp_urdf + " " + \
         xacro_description + \
         " robot_id:=" + str(args.id) + \
-        " visual_material:=" + args.material + \
+        " enable_mavlink_interface:=true" + \
+        " enable_gps_plugin:=true" + \
         " enable_ground_truth:=false" + \
         " enable_logging:=false" + \
         " enable_camera:=false" + \
-        " enable_wind:=false"
-        if args.ual_backend == 'light':
-            xacro_args = xacro_args + \
-            " enable_mavlink_interface:=false" + \
-            " enable_gps_plugin:=false"
-        else:
-            xacro_args = xacro_args + \
-            " enable_mavlink_interface:=true" + \
-            " enable_gps_plugin:=true" + \
-            " mavlink_tcp_port:=" + str(udp_config["simulator_tcp_port"]) + \
-            " mavlink_udp_port:=" + str(udp_config["simulator_udp_port"])
+        " enable_wind:=false" + \
+        " mavlink_tcp_port:=" + str(udp_config["simulator_tcp_port"]) + \
+        " mavlink_udp_port:=" + str(udp_config["simulator_udp_port"]) + \
+        " visual_material:=" + args.material
 
         if args.append_xacro_args:
             for xacro_arg in args.append_xacro_args:
@@ -229,7 +223,6 @@ def main():
     " __name:=spawn_" + args.model + "_" + str(args.id)
     rospy.sleep(args.id)
     subprocess.call(gzmodel_args, shell=True)
-    rospy.loginfo('Model spawned')
 
 if __name__ == "__main__":
     main()

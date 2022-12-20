@@ -297,7 +297,6 @@ void BackendMavros::recoverFromManual() {
         mavros_state_.mode != "STABILIZE" &&
         mavros_state_.mode != "POSITION" &&
         mavros_state_.mode != "LOITER" &&
-        mavros_state_.mode != "AUTO.LOITER" &&
         mavros_state_.mode != "ALT_HOLD") {
         ROS_WARN("Unable to recover from manual mode (not in manual!)");
         return;
@@ -1064,11 +1063,7 @@ void BackendMavros::getAutopilotInformation() {
             autopilot_type_ = AutopilotType::PX4;
             break;
         default:
-#ifdef MAVROS_VERSION_BELOW_1_4_0
-            ROS_ERROR("BackendMavros [%d]: Wrong autopilot type: %s", robot_id_, mavros::utils::to_string((mavlink::common::MAV_AUTOPILOT) vehicle_info_srv.response.vehicles[0].autopilot).c_str());
-#else
             ROS_ERROR("BackendMavros [%d]: Wrong autopilot type: %s", robot_id_, mavros::utils::to_string((mavlink::minimal::MAV_AUTOPILOT) vehicle_info_srv.response.vehicles[0].autopilot).c_str());
-#endif
             exit(0);
     }
 
@@ -1098,15 +1093,9 @@ void BackendMavros::getAutopilotInformation() {
     std::string autopilot_version = std::to_string(major_version) + "." + std::to_string(minor_version) + "." + std::to_string(patch_version) + version_type;
 
     // Autopilot string
-#ifdef MAVROS_VERSION_BELOW_1_4_0
-    ROS_INFO("BackendMavros [%d]: Connected to %s version %s. Type: %s.", robot_id_,
-    mavros::utils::to_string((mavlink::common::MAV_AUTOPILOT) vehicle_info_srv.response.vehicles[0].autopilot).c_str(),
-    autopilot_version.c_str(), mavros::utils::to_string((mavlink::common::MAV_TYPE) vehicle_info_srv.response.vehicles[0].type).c_str());
-#else
     ROS_INFO("BackendMavros [%d]: Connected to %s version %s. Type: %s.", robot_id_,
     mavros::utils::to_string((mavlink::minimal::MAV_AUTOPILOT) vehicle_info_srv.response.vehicles[0].autopilot).c_str(),
     autopilot_version.c_str(), mavros::utils::to_string((mavlink::minimal::MAV_TYPE) vehicle_info_srv.response.vehicles[0].type).c_str());
-#endif
 }
 
 void BackendMavros::initPosePID() {
