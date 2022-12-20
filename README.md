@@ -3,19 +3,6 @@
 
 A repository for the GRVC UAV abstraction layer.
 
-## Installation and use
-
-Download the latest stable version from [here](https://github.com/grvcTeam/grvc-ual/releases).
-
-Start configuring which backends should be active:
-
-```
-    $ cd ~/catkin_ws/src/grvc-ual
-    $ ./configure.py
-```
-
-You can find detailed instructions for installation and how to use the UAL in the [Wiki](https://github.com/grvcTeam/grvc-ual/wiki).
-
 ## How to install with PX4 (Sesame users look here):
 
 In the sources (src) of your ROS Noetic workspace do the following:
