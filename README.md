@@ -16,6 +16,30 @@ Start configuring which backends should be active:
 
 You can find detailed instructions for installation and how to use the UAL in the [Wiki](https://github.com/grvcTeam/grvc-ual/wiki).
 
+## How to install with PX4 (Sesame users look here):
+
+```
+In the sources (src) of your ROS Noetic workspace do the following:
+git clone https://github.com/AntoineRichard/grvc-ual-3.1-noetic.git grvc-ual
+git clone https://github.com/AntoineRichard/PX4-V1.10.2-gz11.git Firmware
+
+sudo apt install python3-pip libgstreamer1.0-dev python-jinja2
+python3 -m pip install toml
+python3 -m pip install markupsafe==2.0.1
+
+cd Firmware
+git submodule update --init --recursive
+make -j8
+make px4_sitl_default gazebo
+cd ../grvc-ual
+./configure_mavros.sh
+cd ../..
+catkin build
+
+source devel/setup.bash
+roslaunch ual_backend_mavros simulation.launch
+```
+
 ## Compatibile autopilots
 
 ### [PX4](https://github.com/PX4/Firmware)
