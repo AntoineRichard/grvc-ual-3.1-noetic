@@ -93,6 +93,7 @@ def main():
         " enable_logging:=false" + \
         " enable_camera:=false" + \
         " enable_wind:=false" + \
+        " camera_namespace:=uav_"+str(args.id) + \
         " mavlink_tcp_port:=" + str(udp_config["simulator_tcp_port"]) + \
         " mavlink_udp_port:=" + str(udp_config["simulator_udp_port"]) + \
         " visual_material:=" + args.material

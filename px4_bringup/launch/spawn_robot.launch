@@ -51,7 +51,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     args="-id=$(arg id) -mode=$(arg mode) -fcu_url=$(arg fcu_url) -gcs_url=$(arg gcs_url) -rtcm_topic=$(arg rtcm_topic)" />
 
     <!-- Run TFs -->
-    <param name="robot_description" command="$(eval 'xacro --inorder ' + find(description_package) + '/models/' + robot_model + '/model.xacro')"/>
+    <param name="tf_prefix" value="uav_$(arg id)" />
+    <param name="robot_description" command="$(eval 'xacro --inorder ' + find(description_package) + '/models/' + robot_model + '/model.xacro' + ' enable_ground_truth:=true robot_namespace:=uav_'+str(id) + ' camera_namespace:=uav_'+str(id))"/>
 
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
