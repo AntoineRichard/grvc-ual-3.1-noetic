@@ -74,6 +74,8 @@ def main():
     subprocess.call("mkdir -p " + temp_dir, shell=True)
 
     # Start gazebo server
+    args.world = os.path.join(description_package_parent_path, args.description_package, "worlds", args.world)
+    print(args.world)
     server_args = "rosrun gazebo_ros gzserver -e " + args.physics + ' ' + args.world + ' __name:=gazebo'
     server_out = open(temp_dir + '/gzserver.out', 'w')
     server_err = open(temp_dir + '/gzserver.err', 'w')
