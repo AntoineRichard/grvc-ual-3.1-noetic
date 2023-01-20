@@ -21,6 +21,8 @@ def main():
                         help="Path to add to GAZEBO_MODEL_PATH")
     parser.add_argument('-description_package', type=str, default="robots_description",
                         help='robot description package, must follow robots_description file structure')
+    parser.add_argument('-headless', type=bool, default=True,
+                        help='Sets if the GUI should be started or not.')
     parser.add_argument('-debug', type=bool, default=False,
                         help='run gzserver with gdb')
     args, unknown = parser.parse_known_args()
@@ -88,22 +90,25 @@ def main():
 
     # Start gazebo client
     time.sleep(0.2)
-    client_args = "rosrun gazebo_ros gzclient __name:=gazebo_gui"
-    client_out = open(temp_dir + '/gzclient.out', 'w')
-    client_err = open(temp_dir + '/gzclient.err', 'w')
-    client = subprocess.Popen(client_args, stdout=client_out, stderr=client_err, cwd=temp_dir, \
+    if not args.headless:
+        client_args = "rosrun gazebo_ros gzclient __name:=gazebo_gui"
+        client_out = open(temp_dir + '/gzclient.out', 'w')
+        client_err = open(temp_dir + '/gzclient.err', 'w')
+        client = subprocess.Popen(client_args, stdout=client_out, stderr=client_err, cwd=temp_dir, \
                                            env=gz_env, shell=True, preexec_fn=os.setsid)
 
     rospy.spin()  # Now I'm a ros node, just wait
 
     # Kill'em all
-    if client.poll() is None:
-        os.killpg(os.getpgid(client.pid), signal.SIGTERM)  # TODO: SIGKILL?
+    if not args.headless:
+        if client.poll() is None:
+            os.killpg(os.getpgid(client.pid), signal.SIGTERM)  # TODO: SIGKILL?
     if server.poll() is None:
         os.killpg(os.getpgid(server.pid), signal.SIGTERM)  # TODO: SIGKILL?
     # Close log files
-    client_out.close()
-    client_err.close()
+    if not args.headless:
+        client_out.close()
+        client_err.close()
     server_out.close()
     server_err.close()
 
